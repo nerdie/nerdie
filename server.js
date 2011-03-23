@@ -15,7 +15,8 @@ var options = {
 		username: 'deceptabot',
 		realname: 'Megatron'
 	},
-	logs: 'logs'
+	logs: 'logs',
+	delayAfterConnect: 1500
 };
 
 var google = new Google();
