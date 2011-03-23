@@ -52,7 +52,7 @@ var bot = jerk(function(j){
 		msg.say(to(msg) + ": I'm always here. Waiting. Watching.");
 	});
 
-	j.watch_for(/^\:?wq?/i, function(msg) {
+	j.watch_for(/^\:?wq?$/i, function(msg) {
 		msg.say(to(msg) + ": You might want to switch to Emacs, buddy.");
 	});
 
