@@ -10,7 +10,7 @@ var sys = require('sys')
 var options = {
 	server: 'irc.freenode.net',
 	nick: 'deceptabot',
-	channels: ['#jperras'],
+	channels: ['#individualdigital 19w44', '#deceptabot'],
 	user: {
 		username: 'deceptabot',
 		realname: 'Megatron'
