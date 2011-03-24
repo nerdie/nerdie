@@ -63,7 +63,7 @@ var bot = jerk(function(j){
 		if (msg.user.match(/^coogle/)) {
 			return msg.say(msg.user + ": Good morning? You can't come up with a more original greeting?");
 		}
-		num = Math.floor(Math.random()*responses.length + 1);
+		num = Math.floor(Math.random()*responses.length);
 		return msg.say(msg.user + ": " + responses[num]);
 	});
 
