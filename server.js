@@ -64,7 +64,7 @@ var bot = jerk(function(j){
 			return msg.say(msg.user + ": Good morning? You can't come up with a more original greeting?");
 		}
 		num = Math.floor(Math.random()*responses.length);
-		return msg.say(msg.user + ": " + responses[number]);
+		return msg.say(msg.user + ": " + responses[num]);
 	});
 
 
