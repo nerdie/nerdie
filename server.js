@@ -52,6 +52,22 @@ var bot = jerk(function(j){
 		msg.say(to(msg) + ": I'm always here. Waiting. Watching.");
 	});
 
+	j.watch_for(/^(good)?\s?morning?/i, function(msg) {
+		var responses = [
+			"It's the morning. How *good* can that really be?",
+			"My kingdom for a venti non-fat, no foam, no water 6 pump extra hot chai tea latte. Is that so much to ask for?",
+			"STOP YELLING, PEOPLE ARE SLEEPING."
+		];
+		var num = 0;
+
+		if (msg.user.match(/^coogle/)) {
+			return msg.say(msg.user + ": Good morning? You can't come up with a more original greeting?");
+		}
+		num = Math.floor(Math.random()*responses.length);
+		return msg.say(msg.user + ": " + responses[number]);
+	});
+
+
 	j.watch_for(/^\:?wq?$/i, function(msg) {
 		msg.say(to(msg) + ": You might want to switch to Emacs, buddy.");
 	});
