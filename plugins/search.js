@@ -10,7 +10,7 @@ var handler = function(msg) {
 		if (results.length) {
 			msg.say(out);
 		}
-		else msg.say(to(msg) + ": Sorry, no results for '" + q + "'");
+		else msg.say(msg.user + ": Sorry, no results for '" + q + "'");
 	});
 
 };
