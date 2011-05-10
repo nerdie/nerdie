@@ -7,7 +7,7 @@
         "realname": "Nerderati Prime"
     },
     "logs": "logs",
-    "delayAfterConnect": 1500
+    "delayAfterConnect": 1500,
     "plugins": {
     }
 }
