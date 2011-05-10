@@ -1,0 +1,11 @@
+{
+    "server": "irc.freenode.net",
+    "nick": "nerdie",
+    "channels": ["#nerdie"],
+    "user": {
+        "username": "nerdie",
+        "realname": "Nerderati Prime"
+    },
+    "logs": "logs",
+    "delayAfterConnect": 1500
+}
