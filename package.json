@@ -1,6 +1,6 @@
 {
   "name": "nerdie",
-  "description": "An IRC bot ",
+  "description": "A pluggable IRC bot for the rest of us. Inspired by Phergie (https://github.com/elazar/phergie).",
   "version": "0.2.0",
   "author": "Joel Perras <joel.perras@gmail.com>, Sean Coates <sean@fictivekin.com>",
   "contributors": [
