@@ -1,0 +1,18 @@
+{
+  "name": "nerdie",
+  "description": "An IRC bot ",
+  "version": "0.2.0",
+  "author": "Joel Perras <joel.perras@gmail.com>, Sean Coates <sean@fictivekin.com>",
+  "contributors": [
+    { "name": "Joel Perras", "email": "joel.perras@gmail.com" },
+    { "name": "Sean Coates", "email": "sean@fictivekin.com" }
+  ],
+  "keywords": ["irc", "bot", "utility"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jperras/nerdie.git"
+  },
+  "engines": { "node": ">=0.4.5" },
+  "dependencies": { "walk": ">=2.0.0", "jerk": ">=1.1.10", "alfred": ">=0.5.2b3" },
+  "bin": { "nerdie": "./server.js" }
+}
