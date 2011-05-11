@@ -1,13 +1,25 @@
 var exports = [];
 
-/* !help: HALP */
-exports.push({pattern: /^!help$/i, handler: function(msg) {
-	msg.say(msg.user + ": One day, I will have a help menu. But today is not that day.");
-}});
+var nerdie;
+var init = function (parentNerdie) {
+	nerdie = parentNerdie;
+}
 
-exports.push({pattern: /^(?:is)?\s+any(?:one|body)\s+(?:here|around|awake)/i, handler: function(msg) {
-	msg.say(msg.user + ": I'm always here. Waiting. Watching.");
-}});
+/* !help: HALP */
+exports.push({
+	init: init,
+	pattern: function() { return nerdie.anchoredPattern('help'); },
+	handler: function(msg) {
+		msg.say(msg.user + ": One day, I will have a help menu. But today is not that day.");
+	}
+});
+
+exports.push({
+	pattern: /^(?:is)?\s+any(?:one|body)\s+(?:here|around|awake)/i,
+	handler: function(msg) {
+		msg.say(msg.user + ": I'm always here. Waiting. Watching.");
+	}
+});
 
 exports.push({pattern: /^(good)?\s?morning?/i, handler: function(msg) {
 	var num = 0

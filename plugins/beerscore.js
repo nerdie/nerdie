@@ -2,7 +2,7 @@ var http = require('http');
 
 var nerdie;
 var getPattern = function () {
-	return nerdie.anchoredPattern('beerscore');
+	return nerdie.anchoredPattern('beerscore', true);
 };
 
 var init = function (parentNerdie) {
