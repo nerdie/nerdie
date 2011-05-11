@@ -11,9 +11,9 @@ if (undefined === config.prefix) {
 
 var nerdie = {
 	config: config,
-	anchoredPattern: function (pattern) {
+	anchoredPattern: function (pattern, arg) {
 		// TODO: escape nick
-		return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + '\\s+(.+)');
+		return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + (arg ? '\\s*(.+)' : '') + '$');
 	}
 };
 
