@@ -6,6 +6,7 @@
         "username": "nerdie",
         "realname": "Nerderati Prime"
     },
+    "prefix": "!",
     "logs": "logs",
     "delayAfterConnect": 1500,
     "plugins": {
