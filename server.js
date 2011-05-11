@@ -42,7 +42,6 @@ var bot = jerk(function(j){
 				} else {
 					(function() {
 						var pattern;
-						console.log("type: " + typeof elem.pattern);
 						if (elem.pattern.exec && elem.pattern.test) {
 							// pattern is a RegExp object
 							pattern = elem.pattern;
