@@ -4,6 +4,19 @@ var walk   = require('walk')
   , jerk   = require('./vendor/Jerk/lib/jerk')
   , config = require('./configulator');
 
+// defaults:
+if (undefined === config.prefix) {
+	config.prefix = '!';
+}
+
+var nerdie = {
+	config: config,
+	anchoredPattern: function (pattern) {
+		// TODO: escape nick
+		return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + '\\s+(.+)');
+	}
+};
+
 var bot = jerk(function(j){
 	var plugin = null
 	  , name = null;
@@ -20,11 +33,24 @@ var bot = jerk(function(j){
 			}
 
 			plugin.forEach(function(elem, idx) {
+				if (undefined !== elem.init && 'function' === typeof elem.init) {
+					elem.init(nerdie);
+				}
+
 				if (!elem.pattern || !elem.handler) {
 					console.log('Plugin ' + name + ' is missing pattern and/or handler function.');
 				} else {
 					(function() {
-						j.watch_for(elem.pattern, elem.handler);
+						var pattern;
+						console.log("type: " + typeof elem.pattern);
+						if (elem.pattern.exec && elem.pattern.test) {
+							// pattern is a RegExp object
+							pattern = elem.pattern;
+						} else {
+							// pattern is a Function
+							pattern = elem.pattern();
+						}
+						j.watch_for(pattern, elem.handler);
 					})();
 				}
 			});
