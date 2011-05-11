@@ -1,11 +1,19 @@
 var http = require('http');
-var pattern = /^!beerscore\s+(.+)/i;
+
+var nerdie;
+var getPattern = function () {
+	return nerdie.anchoredPattern('beerscore');
+};
+
+var init = function (parentNerdie) {
+	nerdie = parentNerdie;
+}
 
 var handler = function(msg) {
 	var options = {
 		'host': 'caedmon.net',
 		port: 80,
-		'path': '/beerscore/' + encodeURIComponent(msg.match_data[1])
+		'path': '/beerscore/' + encodeURIComponent(msg.match_data[2])
 	};
 	var data = ""
 		, out  = ""
@@ -56,4 +64,4 @@ var handler = function(msg) {
 	});
 };
 
-module.exports = {pattern: pattern, handler: handler};
+module.exports = {pattern: getPattern, handler: handler, init: init};
