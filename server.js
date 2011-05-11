@@ -42,12 +42,14 @@ var bot = jerk(function(j){
 				} else {
 					(function() {
 						var pattern;
-						if (elem.pattern.exec && elem.pattern.test) {
-							// pattern is a RegExp object
+						if (elem.pattern instanceof RegExp) {
 							pattern = elem.pattern;
-						} else {
-							// pattern is a Function
+						} else if ('function' === typeof elem.pattern) {
 							pattern = elem.pattern();
+						} else {
+							// not a RegExp or a function; skip
+							console.log("Skipping pattern: " + name + " -> " + pattern);
+							return;
 						}
 						j.watch_for(pattern, elem.handler);
 					})();
