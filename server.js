@@ -1,5 +1,3 @@
-require('./vendor/Jerk/lib/strftime');
-
 var walk   = require('walk')
   , jerk   = require('jerk')
   , config = require('./configulator');
