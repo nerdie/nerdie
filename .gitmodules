@@ -1,6 +1,0 @@
-[submodule "vendor/Jerk"]
-	path = vendor/Jerk
-	url = https://github.com/gf3/Jerk.git
-[submodule "node_modules/walk"]
-	path = node_modules/walk
-	url = https://github.com/coolaj86/node-walk.git

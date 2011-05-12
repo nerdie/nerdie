@@ -1,7 +1,7 @@
 require('./vendor/Jerk/lib/strftime');
 
 var walk   = require('walk')
-  , jerk   = require('./vendor/Jerk/lib/jerk')
+  , jerk   = require('jerk')
   , config = require('./configulator');
 
 // defaults:
