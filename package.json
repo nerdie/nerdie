@@ -14,8 +14,8 @@
   },
   "engines": { "node": ">=0.4.5" },
   "dependencies": {
-    "walk": ">=2.0.0", "jerk": ">=1.1.10", "alfred": ">=0.5.2b3", "coloured": ">=0.2.0",
-    "log": ">=1.1.1"
+    "walk": ">=2.0.0", "jerk": ">=1.1.10", "alfred": ">=0.5.2b3", "coloured": ">=0.2.0", 
+    "log": ">=1.1.1", "futures": ">=2.0.3"
   },
   "bin": { "nerdie": "./server.js" }
 }
