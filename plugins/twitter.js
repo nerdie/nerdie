@@ -1,8 +1,31 @@
 var http = require('http');
 
-var nerdie;
+var NerdiePlugin = require('../nerdie_plugin.js');
+
+function Plugin(parentNerdie) {
+	// I want to call NerdiePlugin() here...
+	this.constructor.constructor.prototype(parentNerdie);
+}
+Plugin.prototype = Object.create(NerdiePlugin.prototype, {
+	constructor: {
+		value: Plugin,
+		enumerable: false
+	}
+});
+module.exports = Plugin;
+//function (nerdie) { new NerdiePlugin(nerdie); };
+return;
+
+
 var init = function (parentNerdie) {
 	nerdie = parentNerdie;
+	nerdie.addListener('pluginLoaded', function (name) {
+		if ('twitter' == name) {
+			console.log("Twitter: loaded myself");
+		} else {
+			console.log("Twitter: loaded other -> " + name);
+		}
+	});
 };
 
 var exports = [];

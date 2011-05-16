@@ -1,5 +1,6 @@
 var walk   = require('walk')
   , jerk   = require('jerk')
+  , events = require('events')
   , config = require('./configulator');
 
 // defaults:
@@ -7,16 +8,26 @@ if (undefined === config.prefix) {
 	config.prefix = '!';
 }
 
-var nerdie = {
-	config: config,
-	anchoredPattern: function (pattern, arg) {
-		// TODO: escape nick
-		return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + (arg ? '\\s*(.+)' : '') + '$');
+function Nerdie() {
+	this.config = config;
+	events.EventEmitter.call(this);
+}
+Nerdie.prototype = Object.create(events.EventEmitter.prototype, {
+	constructor: {
+		value: Nerdie,
+		enumerable: false
 	}
+});
+
+Nerdie.prototype.anchoredPattern = function (pattern, arg) {
+	// TODO: escape nick
+	return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + (arg ? '\\s*(.+)' : '') + '$');
 };
 
 var bot = jerk(function(j){
 	var plugin = null
+	  , nerdie = new Nerdie()
+	  , loadedPlugins = []
 	  , name = null;
 
 	walker = walk.walk('plugins', {followLinks: false});
@@ -24,8 +35,14 @@ var bot = jerk(function(j){
 	walker.on("file", function(root, fileStats, next) {
 		if (fileStats.type == 'file' && fileStats.name.match(/.+\.js$/i)) {
 			name = fileStats.name.split('.').slice(0, -1).join('.');
-			plugin = require("./" + root + "/" + name);
+			var pluginLoader = require("./" + root + "/" + name);
+			if (name !== 'twitter') {
+				next();
+				return;
+			}
+			plugin = new pluginLoader(nerdie);
 
+			/*
 			if (!(plugin instanceof Array)) {
 				plugin = [plugin];
 			}
@@ -53,9 +70,19 @@ var bot = jerk(function(j){
 					})();
 				}
 			});
+			*/
+			loadedPlugins.push({name: name, plugin: plugin});
 			console.log('Loaded ' + name + ' plugin.');
+			console.log(plugin.getName());
 		}
 		next();
+	});
+
+	walker.on("end", function() {
+		nerdie.emit('handshake', config);
+		loadedPlugins.forEach(function (plugin) {
+			nerdie.emit("pluginLoaded", plugin.name, plugin.plugin);
+		});
 	});
 
 
