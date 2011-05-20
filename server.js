@@ -19,15 +19,10 @@ Nerdie.prototype = Object.create(events.EventEmitter.prototype, {
 	}
 });
 
-Nerdie.prototype.anchoredPattern = function (pattern, arg) {
-	// TODO: escape nick
-	return new RegExp('^(' + config.prefix + '|' + config.nick + ':\\s)' + pattern + (arg ? '\\s*(.+)' : '') + '$');
-};
-
 var bot = jerk(function(j){
 	var plugin = null
 	  , nerdie = new Nerdie()
-	  , loadedPlugins = []
+	  , loadedPlugins = {}
 	  , name = null;
 
 	walker = walk.walk('plugins', {followLinks: false});
@@ -36,54 +31,21 @@ var bot = jerk(function(j){
 		if (fileStats.type == 'file' && fileStats.name.match(/.+\.js$/i)) {
 			name = fileStats.name.split('.').slice(0, -1).join('.');
 			var pluginLoader = require("./" + root + "/" + name);
-			if (name !== 'twitter') {
-				next();
-				return;
-			}
 			plugin = new pluginLoader(nerdie);
-
-			/*
-			if (!(plugin instanceof Array)) {
-				plugin = [plugin];
+			if ('object' == typeof plugin.pluginInterface) {
+				plugin.pluginInterface.addListener('registerPattern', function (pattern, callback) {
+					console.log('Registered pattern: ' + pattern);
+					j.watch_for(pattern, callback);
+				});
 			}
-
-			plugin.forEach(function(elem, idx) {
-				if (undefined !== elem.init && 'function' === typeof elem.init) {
-					elem.init(nerdie);
-				}
-
-				if (!elem.pattern || !elem.handler) {
-					console.log('Plugin ' + name + ' is missing pattern and/or handler function.');
-				} else {
-					(function() {
-						var pattern;
-						if (elem.pattern instanceof RegExp) {
-							pattern = elem.pattern;
-						} else if ('function' === typeof elem.pattern) {
-							pattern = elem.pattern();
-						} else {
-							// not a RegExp or a function; skip
-							console.log("Skipping pattern: " + name + " -> " + pattern);
-							return;
-						}
-						j.watch_for(pattern, elem.handler);
-					})();
-				}
-			});
-			*/
-			loadedPlugins.push({name: name, plugin: plugin});
+			loadedPlugins[name] = plugin;
 			console.log('Loaded ' + name + ' plugin.');
-			console.log(plugin.getName());
 		}
 		next();
 	});
 
 	walker.on("end", function() {
-		nerdie.emit('handshake', config);
-		loadedPlugins.forEach(function (plugin) {
-			nerdie.emit("pluginLoaded", plugin.name, plugin.plugin);
-		});
+		nerdie.emit('init', config, loadedPlugins);
 	});
-
 
 }).connect(config);

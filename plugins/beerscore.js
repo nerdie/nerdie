@@ -1,15 +1,19 @@
 var http = require('http');
 
-var nerdie;
-var getPattern = function () {
-	return nerdie.anchoredPattern('beerscore', true);
+var NerdieInterface = require('../nerdie_interface.js');
+module.exports = Plugin;
+
+function Plugin(parentNerdie) {
+	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+}
+Plugin.prototype.init = function () {
+	this.pluginInterface.registerPattern(
+		this.pluginInterface.anchoredPattern('beerscore', true),
+		this.getBeerscore
+	);
 };
 
-var init = function (parentNerdie) {
-	nerdie = parentNerdie;
-}
-
-var handler = function(msg) {
+Plugin.prototype.getBeerscore = function(msg) {
 	var options = {
 		'host': 'caedmon.net',
 		port: 80,
@@ -64,4 +68,3 @@ var handler = function(msg) {
 	});
 };
 
-module.exports = {pattern: getPattern, handler: handler, init: init};

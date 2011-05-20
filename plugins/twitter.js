@@ -1,36 +1,45 @@
 var http = require('http');
 
-var NerdiePlugin = require('../nerdie_plugin.js');
+var NerdieInterface = require('../nerdie_interface.js');
+module.exports = Plugin;
 
 function Plugin(parentNerdie) {
-	// I want to call NerdiePlugin() here...
-	this.constructor.constructor.prototype(parentNerdie);
+	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype = Object.create(NerdiePlugin.prototype, {
-	constructor: {
-		value: Plugin,
-		enumerable: false
-	}
-});
-module.exports = Plugin;
-//function (nerdie) { new NerdiePlugin(nerdie); };
-return;
-
-
-var init = function (parentNerdie) {
-	nerdie = parentNerdie;
-	nerdie.addListener('pluginLoaded', function (name) {
-		if ('twitter' == name) {
-			console.log("Twitter: loaded myself");
-		} else {
-			console.log("Twitter: loaded other -> " + name);
+Plugin.prototype.init = function () {
+	var plugin = this;
+	// !twitter {}
+	this.pluginInterface.registerPattern(
+		this.pluginInterface.anchoredPattern('twitter', true),
+		function (msg) {
+			var parts = msg.match_data[2].split(' ');
+			if (parts[0].match(/^[0-9]+$/)) {
+				this.getStatus(parts[0], msg.say);
+			} else {
+				if (2 == parts.length) {
+					index = parts[1];
+				} else {
+					index = 1;
+				}
+				plugin.getUserStatus(parts[0], index, msg.say);
+			}
 		}
-	});
-};
+	);
 
-var exports = [];
+	// URLs
+	// 1) https://twitter.com/username/status/123123123123123
+	// 2) https://twitter.com/#!/username/status/123123123123123
+	this.pluginInterface.registerPattern(
+		/https?:\/\/twitter.com\/(#!\/)?(.+?)\/status\/([0-9]+)/i,
+		function (msg) {
+			var num = msg.match_data[3];
+			plugin.getStatus(num, msg.say);
+		}
+	);
+}
 
-var getStatus = function (num, callback) {
+Plugin.prototype.getStatus = function (num, callback) {
+	var plugin = this;
 	var options = {
 		'host': 'twitter.com',
 		port: 80,
@@ -48,13 +57,14 @@ var getStatus = function (num, callback) {
 				callback("Invalid tweet?");
 			}
 			if (data && undefined !== data.user) {
-				callback(formatTweet(data));
+				callback(plugin.formatTweet(data));
 			}
 		});
 	});
 };
 
-var getUserStatus = function (username, index, callback) {
+Plugin.prototype.getUserStatus = function (username, index, callback) {
+	var plugin = this;
 	index--; // zero-indexed array
 	var options = {
 		'host': 'twitter.com',
@@ -73,50 +83,14 @@ var getUserStatus = function (username, index, callback) {
 				callback("Invalid tweet?");
 			}
 			if (data && undefined !== data[index] && undefined != data[index].user) {
-				callback(formatTweet(data[index]));
+				callback(plugin.formatTweet(data[index]));
 			}
 		});
 	});
 }
 
-var formatTweet = function (tweet) {
+Plugin.prototype.formatTweet = function (tweet) {
 	var out =  '<@' + tweet.user.screen_name + '> ' + tweet.text;
-	out += ' -> http://twitter.com/' + encodeURIComponent(tweet.user.screen_name) + '/statuses/' + encodeURIComponent(tweet.id_str);
+	out += ' -> http://twitter.com/' + encodeURIComponent(tweet.user.screen_name) + '/status/' + encodeURIComponent(tweet.id_str);
 	return out;
 };
-
-var patternHandler = function (msg) {
-	var parts = msg.match_data[2].split(' ');
-	if (parts[0].match(/^[0-9]+$/)) {
-		getStatus(parts[0], msg.say);
-	} else {
-		if (2 == parts.length) {
-			index = parts[1];
-		} else {
-			index = 1;
-		}
-		getUserStatus(parts[0], index, msg.say);
-	}
-};
-
-var urlHandler = function (msg) {
-	var num = msg.match_data[3];
-	getStatus(num, msg.say);
-}
-
-// !twitter {}
-exports.push({
-	init: init,
-	pattern: function () { return nerdie.anchoredPattern('twitter', true); },
-	handler: patternHandler
-});
-
-// URLs
-// 1) https://twitter.com/username/status/123123123123123
-// 1) https://twitter.com/#!/username/status/123123123123123
-exports.push({
-	pattern: /https?:\/\/twitter.com\/(#!\/)?(.+?)\/status\/([0-9]+)/i,
-	handler: urlHandler
-});
-
-module.exports = exports;
