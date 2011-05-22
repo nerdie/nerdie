@@ -1,11 +1,15 @@
 var NerdieInterface = require('../nerdie_interface.js');
 
-module.exports = Plugin;
+var count;
 
-function Plugin(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+function Parrot(parentNerdie) {
+	this.pluginInterface = new NerdieInterface(
+		parentNerdie,
+		this,
+		{db: true}
+	);
 }
-Plugin.prototype.init = function () {
+Parrot.prototype.init = function () {
 	/* !help: HALP */
 	this.pluginInterface.registerPattern(
 		this.pluginInterface.anchoredPattern('help'),
@@ -43,5 +47,45 @@ Plugin.prototype.init = function () {
 		}
 	);
 
+	this.pluginInterface.registerPattern(
+		this.pluginInterface.anchoredPattern('count'),
+		countHandler
+	);
 };
+Parrot.prototype.gotDb = function (db) {
+	// THIS IS REALLY BROKEN
+	// I think it's something to do with Alfred, itself
+	count = db.define("Parrot_count");
+	//count.property('counter', 'integer');
+	//count.property('name', 'string');
+	count.index('lookup', function (doc) { console.log("INDEX"); if (doc) { return doc.name; }});
+	var current = count.find({lookup: 'oink'});
+	console.log("FIND0: ");
+	console.log(current);
+	current(function (err, key, value) {
+		console.log("FIND1: ", err, key, value);
+	});
+	return;
+	if (current) {
+		console.log("CURRENT: " + current);
+	} else {
+		var counter = count.new({counter: 0, name: 'oink'});
+		counter.save(function (err) {
+			if (err) {
+				console.log("ERR: " + err);
+			} else {
+				console.log("SAVED.");
+			}
+			console.log("REFIND: ");
+			count.find({name: 'oink'})(function (err, key, value) {
+				console.log(err, key, value);
+			});
+		});
+		console.log("COUNTER: " + counter);
+	}
+}
+var countHandler = function (msg) {
+};
+
+module.exports = Parrot;
 
