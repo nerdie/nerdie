@@ -57,8 +57,6 @@ Parrot.prototype.gotDb = function (incomingDb) {
 	db = incomingDb;
 	db.get('counter', function (err, data) {
 		if (data) {
-			console.log("got data");
-			console.log(data);
 			currentCount = data.count;
 		} else {
 			// record does not exist; create empty record
