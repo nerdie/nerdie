@@ -2,12 +2,11 @@ var Google = require('../vendor/google/google')
   , g = new Google();
 
 var NerdieInterface = require('../nerdie_interface.js');
-module.exports = Plugin;
 
-function Plugin(parentNerdie) {
+function Search(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype.init = function () {
+Search.prototype.init = function () {
 	this.pluginInterface.registerPattern(
 		this.pluginInterface.anchoredPattern('g(?:oogle)?', true),
 		getGoogle
@@ -23,3 +22,5 @@ var getGoogle = function(msg) {
 		else msg.say(msg.user + ": Sorry, no results for '" + q + "'");
 	});
 };
+
+module.exports = Search;

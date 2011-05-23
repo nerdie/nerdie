@@ -1,19 +1,7 @@
 var emitter = require('events').EventEmitter
-  , Alfred = require('alfred');
+  , Tiny = require('node-tiny');
 
-module.exports = NerdieInterface;
-
-var db;
-
-Alfred.open(__dirname + '/db', function (err, openedDb) {
-	if (err) {
-		console.log(err);
-		throw err;
-	} else {
-		console.log('Opened database for plugins');
-		db = openedDb;
-	}
-});
+var dbPath = __dirname + '/db/';
 
 function NerdieInterface(parentNerdie, plugin, options) {
 	if (undefined === options) {
@@ -31,35 +19,15 @@ function NerdieInterface(parentNerdie, plugin, options) {
 	});
 	plugin.addListener = this.addListener;
 
-	var dbRegistration = function () {
-		if (db) {
+	if (options.db && typeof plugin.gotDb == 'function') {
+		Tiny(dbPath + plugin.constructor.name + '.tiny', function (err, db) {
+			if (err) {
+				console.log("Failed to load database: " + plugin.constructor.name);
+				return false;
+			}
 			plugin.gotDb(db);
 			return true;
-		} else {
-			return false;
-		}
-	};
-	if (undefined === options.db || !options.db) {
-		// database not requested
-	} else if (undefined === plugin.gotDb || 'function' !== typeof plugin.gotDb) {
-		console.log("Plugin " + plugin.constructor.name + " does not implement gotDb(), so not attempting to register a dataase, even though one was requested.");
-	} else {
-		if (!dbRegistration()) {
-			var dbTries = 1;
-			var dbInterval = setInterval(function () {
-				if (++dbTries < 10) {
-					if (dbRegistration()) {
-						clearInterval(dbInterval);
-					} else {
-						console.log("Could not connect to DB. Will retry.");
-					}
-				} else {
-					console.log("Could not connect to DB. Giving up.");
-					myInterface.emit("databaseConnectFail");
-					clearInterval(dbInterval);
-				}
-			}, 1000);
-		}
+		});
 	}
 }
 NerdieInterface.prototype = Object.create(emitter.prototype, {
@@ -85,3 +53,4 @@ NerdieInterface.prototype.registerPattern = function (pattern, callback) {
 	);
 }
 
+module.exports = NerdieInterface;

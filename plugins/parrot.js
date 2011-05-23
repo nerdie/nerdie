@@ -1,6 +1,7 @@
 var NerdieInterface = require('../nerdie_interface.js');
 
-var count;
+var currentCount;
+var db;
 
 function Parrot(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(
@@ -52,39 +53,25 @@ Parrot.prototype.init = function () {
 		countHandler
 	);
 };
-Parrot.prototype.gotDb = function (db) {
-	// THIS IS REALLY BROKEN
-	// I think it's something to do with Alfred, itself
-	count = db.define("Parrot_count");
-	//count.property('counter', 'integer');
-	//count.property('name', 'string');
-	count.index('lookup', function (doc) { console.log("INDEX"); if (doc) { return doc.name; }});
-	var current = count.find({lookup: 'oink'});
-	console.log("FIND0: ");
-	console.log(current);
-	current(function (err, key, value) {
-		console.log("FIND1: ", err, key, value);
-	});
-	return;
-	if (current) {
-		console.log("CURRENT: " + current);
-	} else {
-		var counter = count.new({counter: 0, name: 'oink'});
-		counter.save(function (err) {
-			if (err) {
-				console.log("ERR: " + err);
-			} else {
-				console.log("SAVED.");
-			}
-			console.log("REFIND: ");
-			count.find({name: 'oink'})(function (err, key, value) {
-				console.log(err, key, value);
+Parrot.prototype.gotDb = function (incomingDb) {
+	db = incomingDb;
+	db.get('counter', function (err, data) {
+		if (data) {
+			console.log("got data");
+			console.log(data);
+			currentCount = data.count;
+		} else {
+			// record does not exist; create empty record
+			db.set('counter', {count: 0}, function (err) {
+				currentCount = 0;
 			});
-		});
-		console.log("COUNTER: " + counter);
-	}
+		}
+	});
 }
 var countHandler = function (msg) {
+	db.update('counter', {count: ++currentCount}, function (err) {
+		msg.say(msg.user + ": " + currentCount);
+	});
 };
 
 module.exports = Parrot;

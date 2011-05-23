@@ -2,7 +2,7 @@
   "name": "nerdie",
   "description": "A pluggable IRC bot for the rest of us. Inspired by Phergie (https://github.com/elazar/phergie).",
   "version": "0.2.0",
-  "author": "Joel Perras <joel.perras@gmail.com>, Sean Coates <sean@fictivekin.com>",
+  "author": "Joel Perras <joel.perras@gmail.com>, Sean Coates <sean@seancoates.com>",
   "contributors": [
     { "name": "Joel Perras", "email": "joel.perras@gmail.com" },
     { "name": "Sean Coates", "email": "sean@fictivekin.com" }
@@ -14,8 +14,8 @@
   },
   "engines": { "node": ">=0.4.5" },
   "dependencies": {
-    "walk": ">=2.0.0", "jerk": ">=1.1.10", "alfred": ">=0.5.2b3", "coloured": ">=0.2.0", 
-    "log": ">=1.1.1", "futures": ">=2.0.3"
+    "walk": ">=2.0.0", "jerk": ">=1.1.10", "node-tiny": ">=0.0.1",
+    "coloured": ">=0.2.0", "log": ">=1.1.1", "futures": ">=2.0.3"
   },
   "bin": { "nerdie": "./server.js" }
 }

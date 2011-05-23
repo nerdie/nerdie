@@ -1,12 +1,11 @@
 var http = require('http');
 
 var NerdieInterface = require('../nerdie_interface.js');
-module.exports = Plugin;
 
-function Plugin(parentNerdie) {
+function Twitter(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype.init = function () {
+Twitter.prototype.init = function () {
 	var plugin = this;
 	// !twitter {}
 	this.pluginInterface.registerPattern(
@@ -38,7 +37,7 @@ Plugin.prototype.init = function () {
 	);
 }
 
-Plugin.prototype.getStatus = function (num, callback) {
+Twitter.prototype.getStatus = function (num, callback) {
 	var plugin = this;
 	var options = {
 		'host': 'twitter.com',
@@ -63,7 +62,7 @@ Plugin.prototype.getStatus = function (num, callback) {
 	});
 };
 
-Plugin.prototype.getUserStatus = function (username, index, callback) {
+Twitter.prototype.getUserStatus = function (username, index, callback) {
 	var plugin = this;
 	index--; // zero-indexed array
 	var options = {
@@ -89,8 +88,10 @@ Plugin.prototype.getUserStatus = function (username, index, callback) {
 	});
 }
 
-Plugin.prototype.formatTweet = function (tweet) {
+Twitter.prototype.formatTweet = function (tweet) {
 	var out =  '<@' + tweet.user.screen_name + '> ' + tweet.text;
 	out += ' -> http://twitter.com/' + encodeURIComponent(tweet.user.screen_name) + '/status/' + encodeURIComponent(tweet.id_str);
 	return out;
 };
+
+module.exports = Twitter;
