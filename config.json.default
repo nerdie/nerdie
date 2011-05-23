@@ -2,6 +2,7 @@
     "server": "irc.freenode.net",
     "nick": "nerdie",
     "channels": ["#nerdie"],
+    "admins": ["jperras"],
     "user": {
         "username": "nerdie",
         "realname": "Nerderati Prime"
