@@ -71,7 +71,6 @@ var tellHandler = function (msg) {
 };
 var ago = function (ts) {
 	var timeDiff = (Date.now() - ts) / 1000;
-	console.log(Date.now(), ts, timeDiff);
 
 	var days = Math.floor(timeDiff / 86400);
 	if (days > 0) {
