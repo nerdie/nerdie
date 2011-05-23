@@ -52,6 +52,12 @@ Parrot.prototype.init = function () {
 		this.pluginInterface.anchoredPattern('count'),
 		countHandler
 	);
+
+	var myIntercae = this.pluginInterface;
+	this.pluginInterface.registerPattern(
+		this.pluginInterface.anchoredPattern('uniqueid'),
+		function (msg) { msg.say("Unique ID: " + myInterface.uniqueId()); }
+	);
 };
 Parrot.prototype.gotDb = function (incomingDb) {
 	db = incomingDb;
