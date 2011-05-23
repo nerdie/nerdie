@@ -38,10 +38,24 @@ NerdieInterface.prototype = Object.create(emitter.prototype, {
 });
 
 NerdieInterface.prototype.anchoredPattern = function (pattern, arg) {
-	// TODO: escape nick
+	// escape mechanism borrowed from Simin Willison:
+	//  http://simonwillison.net/2006/Jan/20/escape/
+	// arguments.callee = this function (cheap caching)
+	if (!arguments.callee.sRE) {
+		var specials = [
+			'/', '.', '*', '+', '?', '|',
+			'(', ')', '[', ']', '{', '}', '\\'
+		];
+		arguments.callee.sRE = new RegExp(
+			'(\\' + specials.join('|\\') + ')', 'g'
+		);
+	}
+
+	var nick = this.nerdie.config.nick.replace(arguments.callee.sRE, '\\$1');
+
 	return new RegExp(
 		'^(' + this.nerdie.config.prefix + '|' +
-		this.nerdie.config.nick + ':\\s)' + pattern +
+		nick + ':\\s)' + pattern +
 		(arg ? '\\s*(.+)' : '') + '$'
 	);
 };
