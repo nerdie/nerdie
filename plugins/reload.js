@@ -20,11 +20,5 @@ Plugin.prototype.reload = function(msg) {
 		msg.msg('You do not have permissions for reloading.');
 		return;
 	}
-	try {
-		require('supervisor');
-	} catch(e) {
-		msg.msg('You need to install node-supervisor (`npm install -g supervisor`).');
-		return;
-	}
 	process.exit(0);
 };
