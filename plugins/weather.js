@@ -5,21 +5,19 @@ var NerdieInterface = require('../nerdie_interface.js');
 var key = null
   , config = null;
 
-module.exports = Plugin;
-
-function Plugin(parentNerdie) {
+function Weather(parentNerdie) {
 	config = (parentNerdie.config.weather) ? parentNerdie.config.weather : {};
 
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype.init = function () {
+Weather.prototype.init = function () {
 	this.pluginInterface.registerPattern(
 		this.pluginInterface.anchoredPattern('weather', true),
 		this.getWeather
 	);
 };
 
-Plugin.prototype.getWeather = function(msg) {
+Weather.prototype.getWeather = function(msg) {
 	if (!config || !config.key) {
 		msg.say('You need a weather API key. Get one here: http://worldweatheronline.com');
 		return;
@@ -61,5 +59,4 @@ Plugin.prototype.getWeather = function(msg) {
 	});
 };
 
-
-
+module.exports = Weather;

@@ -1,19 +1,18 @@
 var request = require('request');
 
 var NerdieInterface = require('../nerdie_interface.js');
-module.exports = Plugin;
 
-function Plugin(parentNerdie) {
+function Convert(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype.init = function () {
+Convert.prototype.init = function () {
 	this.pluginInterface.registerPattern(
 		this.pluginInterface.anchoredPattern('convert', true),
 		this.getConversion
 	);
 };
 
-Plugin.prototype.getConversion = function(msg) {
+Convert.prototype.getConversion = function(msg) {
 	var toConvert = msg.match_data[2].split('to');
 
 	if (toConvert.length !== 2) {
@@ -50,3 +49,4 @@ Plugin.prototype.getConversion = function(msg) {
 };
 
 
+module.exports = Convert;

@@ -1,16 +1,15 @@
 var request = require('request');
 
 var NerdieInterface = require('../nerdie_interface.js');
-module.exports = Plugin;
 
-function Plugin(parentNerdie) {
+function Tychay(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
-Plugin.prototype.init = function () {
+Tychay.prototype.init = function () {
 	this.pluginInterface.registerPattern(/.*(?:terry\s+chay|tychay)/i, this.getChayism);
 };
 
-Plugin.prototype.getChayism = function(msg) {
+Tychay.prototype.getChayism = function(msg) {
 	var uri = 'http://phpdoc.info/chayism/';
 
 	request({uri: uri}, function (error, response, body) {
@@ -22,3 +21,5 @@ Plugin.prototype.getChayism = function(msg) {
 		}
 	});
 };
+
+module.exports = Tychay;
