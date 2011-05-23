@@ -28,10 +28,18 @@ var bot = jerk(function(j){
 	walker = walk.walk('plugins', {followLinks: false});
 
 	walker.on("file", function(root, fileStats, next) {
+		var pluginLoader = null;
+
 		if (fileStats.type == 'file' && fileStats.name.match(/.+\.js$/i)) {
-			name = fileStats.name.split('.').slice(0, -1).join('.');
-			var pluginLoader = require("./" + root + "/" + name);
+
+			if (fileStats.name == 'index.js') {
+				name = "./" + root;
+			} else {
+				name = "./" + root + "/" + fileStats.name.split('.').slice(0, -1).join('.');
+			}
+			pluginLoader = require(name);
 			plugin = new pluginLoader(nerdie);
+
 			if ('object' == typeof plugin.pluginInterface) {
 				plugin.pluginInterface.addListener('registerPattern', function (pattern, callback) {
 					console.log('Registered pattern: ' + pattern);
