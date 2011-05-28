@@ -42,13 +42,13 @@ var tellHandler = function (msg) {
 		msg.say('You must user reminders within the channel where they will be relayed.');
 		return;
 	}
-	var chunks = msg.match_data[2].split(' ', 2);
-	if (!chunks[0] || !chunks[1]) {
+	var txt = msg.match_data[2];
+	var tellNick = txt.substr(0, txt.indexOf(' '));
+	var tellMsg = txt.substr(txt.indexOf(' ') + 1);
+	if (!tellNick || !tellMsg) {
 		// no nick or message supplied
 		return
 	}
-	var tellNick = chunks[0];
-	var tellMsg = chunks[1];
 	db.set(
 		myInterface.uniqueId(),
 		{
