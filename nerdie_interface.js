@@ -8,6 +8,7 @@ function NerdieInterface(parentNerdie, plugin, options) {
 		options = {};
 	}
 	emitter.call(this);
+	parentNerdie.setMaxListeners(0);
 	this.nerdie = parentNerdie;
 	this.plugin = plugin;
 	myInterface = this;

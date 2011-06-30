@@ -19,7 +19,7 @@ Nerdie.prototype = Object.create(events.EventEmitter.prototype, {
 	}
 });
 
-var bot = jerk(function(j){
+Nerdie.prototype.bot = jerk(function(j){
 	var plugin = null
 	  , nerdie = new Nerdie()
 	  , loadedPlugins = {}
