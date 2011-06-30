@@ -22,7 +22,7 @@ function NerdieInterface(parentNerdie, plugin, options) {
 	if (options.db && typeof plugin.gotDb == 'function') {
 		Tiny(dbPath + plugin.constructor.name + '.tiny', function (err, db) {
 			if (err) {
-				console.log("Failed to load database: " + plugin.constructor.name);
+				console.log("Failed to load database: " + plugin.constructor.name + " -> " + err);
 				return false;
 			}
 			plugin.gotDb(db);
