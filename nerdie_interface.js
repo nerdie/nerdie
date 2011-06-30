@@ -38,7 +38,7 @@ NerdieInterface.prototype = Object.create(emitter.prototype, {
 });
 
 NerdieInterface.prototype.anchoredPattern = function (pattern, arg) {
-	// escape mechanism borrowed from Simin Willison:
+	// escape mechanism borrowed from Simon Willison:
 	//  http://simonwillison.net/2006/Jan/20/escape/
 	var nick = this.nerdie.config.nick.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
