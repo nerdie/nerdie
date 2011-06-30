@@ -1,5 +1,7 @@
 {
     "server": "irc.freenode.net",
+    "port": 6667,
+    "ssl": false,
     "nick": "nerdie",
     "channels": ["#nerdie"],
     "admins": ["jperras"],
