@@ -167,7 +167,7 @@ Twitter.prototype.streamTweets = function (track) {
 					for (var k in track) {
 						if (track.hasOwnProperty(k)) {
 							track[k].forEach(function(v) {
-								if ((tweet.text + ' @' + tweet.user.screen_name).match(v)) {
+								if ((tweet.text + ' @' + tweet.user.screen_name).match(new RegExp(v, 'i'))) {
 									bot.say(k, msg);
 								}
 							});
