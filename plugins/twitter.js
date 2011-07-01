@@ -1,10 +1,22 @@
-var http = require('http');
+var http = require('http')
+  , querystring = require('querystring')
+  , base64 = require('base64');
 
 var NerdieInterface = require('../nerdie_interface.js');
 
+var twitter_auth;
+var bot;
+var nerdie;
+
 function Twitter(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	if (parentNerdie.config.plugins.twitter.auth) {
+		twitter_auth = parentNerdie.config.plugins.twitter.auth;
+	}
+	bot = parentNerdie.bot;
+	nerdie = parentNerdie;
 }
+
 Twitter.prototype.init = function () {
 	var plugin = this;
 	// !twitter {}
@@ -35,6 +47,11 @@ Twitter.prototype.init = function () {
 			plugin.getStatus(num, msg.say);
 		}
 	);
+
+	// track
+	if (nerdie.config.plugins.twitter.auth && nerdie.config.plugins.twitter.track) {
+		this.streamTweets(nerdie.config.plugins.twitter.track);
+	}
 }
 
 Twitter.prototype.getStatus = function (num, callback) {
@@ -93,5 +110,85 @@ Twitter.prototype.formatTweet = function (tweet) {
 	out += ' -> http://twitter.com/' + encodeURIComponent(tweet.user.screen_name) + '/status/' + encodeURIComponent(tweet.id_str);
 	return out;
 };
+
+// mostly borrowed from https://gist.github.com/433101
+Twitter.prototype.streamTweets = function (track) {
+	var streamTweets = this.streamTweets;
+	var LINE_REGEX = /^(.+?)\r\n/;
+
+	var input = "";
+
+	var toTrack = [];
+	for (var k in track) {
+		if (track.hasOwnProperty(k)) {
+			track[k].forEach(function(v) {
+				if (toTrack.indexOf(v) === -1) {
+					toTrack.push(v);
+				}
+			});
+		}
+	}
+
+	var query = querystring.stringify({track: toTrack.join(',')});
+	var headers = {
+		'Host': 'stream.twitter.com',
+		'Authorization': 'Basic ' + base64.encode(
+			twitter_auth.user + ':' + twitter_auth.pass
+		)
+	};
+	var client = http.createClient(80, 'stream.twitter.com');
+	client.setTimeout(1000 * 60 * 5);
+
+	var request = client.request('GET', '/1/statuses/filter.json?' + query, headers);
+	request.addListener('response', function(response) {
+		response.setEncoding('utf8');
+		console.log('Starting twitter stream listener...');
+	
+		response.addListener('data', function(chunk) {
+			if (chunk != "\r\n")
+				input += chunk;
+				
+			var match, tweet, msg;
+			
+			while (match = input.match(LINE_REGEX)) {
+				input = input.substr(match[0].length);
+
+				try {
+					tweet = JSON.parse(match[1]);
+				} catch (e) {
+					console.log("ERROR: invalid JSON request");
+				}
+				
+				// Check if it's a bad retweet or if the user has less than 5 friends (might be a bot!)
+				if (tweet.user.friends_count >= 5 && tweet.text.match(/(^|\s)RT @([^\s]+)/) == null && tweet.text.match(/\svia\s|via\s@(\w+)/) == null) {
+
+					msg = ">> " + tweet.text;
+					msg += ' -> http://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
+					for (var k in track) {
+						if (track.hasOwnProperty(k)) {
+							track[k].forEach(function(v) {
+								if ((tweet.text + ' @' + tweet.user.screen_name).match(v)) {
+									bot.say(k, msg);
+								}
+							});
+						}
+					}
+				}
+			}
+		});
+	
+		response.addListener('error', function(err) {
+			console.log('Error while receiving tweets: ' + err);
+			console.log('Restarting...');
+			setTimeout(streamTweets, 3000);
+		});
+	
+		response.addListener('end', function() {
+			console.log('Twitter stream timed out. Restarting...');
+			setTimeout(streamTweets, 3000);
+		});
+	});
+	request.end();
+}
 
 module.exports = Twitter;

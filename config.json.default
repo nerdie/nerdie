@@ -13,5 +13,14 @@
     "logs": "logs",
     "delayAfterConnect": 1500,
     "plugins": {
+        "twitter": {
+            "auth": {
+                "user": "nerdiebot",
+                "pass": "PASSWORDGOESHERE"
+            },
+            "track": {
+                "#nerdie": ["nerdie", "@nerdiebot"]
+            }
+        }
     }
 }
