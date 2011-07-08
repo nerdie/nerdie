@@ -164,10 +164,12 @@ Twitter.prototype.streamTweets = function (track) {
 
 					msg = ">> " + tweet.text;
 					msg += ' -> http://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
+					var said = [];
 					for (var k in track) {
 						if (track.hasOwnProperty(k)) {
 							track[k].forEach(function(v) {
-								if ((tweet.text + ' @' + tweet.user.screen_name).match(new RegExp(v, 'i'))) {
+								if (said.indexOf(k) === -1 && (tweet.text + ' @' + tweet.user.screen_name).match(new RegExp(v, 'i'))) {
+									said.push(k);
 									bot.say(k, msg);
 								}
 							});
