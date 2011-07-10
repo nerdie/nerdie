@@ -25,7 +25,7 @@ Twitter.prototype.init = function () {
 		function (msg) {
 			var parts = msg.match_data[2].split(' ');
 			if (parts[0].match(/^[0-9]+$/)) {
-				this.getStatus(parts[0], msg.say);
+				plugin.getStatus(parts[0], msg.say);
 			} else {
 				if (2 == parts.length) {
 					index = parts[1];
