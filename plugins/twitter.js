@@ -1,6 +1,5 @@
 var http = require('http')
   , querystring = require('querystring')
-  , base64 = require('base64');
 
 var NerdieInterface = require('../nerdie_interface.js');
 
@@ -10,7 +9,7 @@ var nerdie;
 
 function Twitter(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
-	if (parentNerdie.config.plugins.twitter.auth) {
+	if (parentNerdie.config.plugins.twitter && parentNerdie.config.plugins.twitter.auth) {
 		twitter_auth = parentNerdie.config.plugins.twitter.auth;
 	}
 	bot = parentNerdie.bot;
@@ -49,7 +48,7 @@ Twitter.prototype.init = function () {
 	);
 
 	// track
-	if (nerdie.config.plugins.twitter.auth && nerdie.config.plugins.twitter.track) {
+	if (nerdie.config.plugins.twitter && nerdie.config.plugins.twitter.auth && nerdie.config.plugins.twitter.track) {
 		this.streamTweets(nerdie.config.plugins.twitter.track);
 	}
 }
@@ -132,9 +131,9 @@ Twitter.prototype.streamTweets = function (track) {
 	var query = querystring.stringify({track: toTrack.join(',')});
 	var headers = {
 		'Host': 'stream.twitter.com',
-		'Authorization': 'Basic ' + base64.encode(
+		'Authorization': 'Basic ' + new Buffer(
 			twitter_auth.user + ':' + twitter_auth.pass
-		)
+		).toString('base64')
 	};
 	var client = http.createClient(80, 'stream.twitter.com');
 	client.setTimeout(1000 * 60 * 5);
