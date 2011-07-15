@@ -31,7 +31,10 @@ Nerdie.prototype.bot = jerk(function(j){
 		}
 		files.forEach(function (filename) {
 			var pluginLoader = null;
-			// TODO: make sure it's a file
+			if (!fs.statSync("./plugins/" + filename).isFile()) {
+				// not a file
+				return;
+			}
 			if (filename.match(/.+\.js$/i)) {
 				name = "./plugins/" + filename.split('.').slice(0, -1).join('.');
 				pluginLoader = require(name);
