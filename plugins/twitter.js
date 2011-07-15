@@ -1,5 +1,5 @@
 var http = require('http')
-  , querystring = require('querystring')
+  , querystring = require('querystring');
 
 var NerdieInterface = require('../nerdie_interface.js');
 
