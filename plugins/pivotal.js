@@ -9,9 +9,14 @@ var tracker_token;
 var default_project;
 var bot;
 var nerdie;
+var enabled = true;
 
 function Pivotal(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	if (!parentNerdie.config.plugins.pivotal) {
+		enabled = false;
+		return;
+	}
 	if (parentNerdie.config.plugins.pivotal.auth) {
 		tracker_token = parentNerdie.config.plugins.pivotal.auth.token;
 	}
@@ -22,6 +27,9 @@ function Pivotal(parentNerdie) {
 
 Pivotal.prototype.init = function () {
 	var plugin = this;
+	if (!enabled) {
+		return;
+	}
 	this.pluginInterface.registerPattern(
 		this.pluginInterface.anchoredPattern('pivotal', true),
 		function (msg) {
