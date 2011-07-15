@@ -1,6 +1,6 @@
-var walk   = require('walk')
-  , jerk   = require('jerk')
+var jerk   = require('jerk')
   , events = require('events')
+  , fs = require('fs')
   , config = require('./configulator');
 
 // defaults:
@@ -25,34 +25,28 @@ Nerdie.prototype.bot = jerk(function(j){
 	  , loadedPlugins = {}
 	  , name = null;
 
-	walker = walk.walk('plugins', {followLinks: false});
-
-	walker.on("file", function(root, fileStats, next) {
-		var pluginLoader = null;
-
-		if (fileStats.type == 'file' && fileStats.name.match(/.+\.js$/i)) {
-
-			if (fileStats.name == 'index.js') {
-				name = "./" + root;
-			} else {
-				name = "./" + root + "/" + fileStats.name.split('.').slice(0, -1).join('.');
-			}
-			pluginLoader = require(name);
-			plugin = new pluginLoader(nerdie);
-
-			if ('object' == typeof plugin.pluginInterface) {
-				plugin.pluginInterface.addListener('registerPattern', function (pattern, callback) {
-					console.log('Registered pattern: ' + pattern);
-					j.watch_for(pattern, callback);
-				});
-			}
-			loadedPlugins[name] = plugin;
-			console.log('Loaded ' + name + ' plugin.');
+	fs.readdir('plugins', function(err, files) {
+		if (err) {
+			throw err;
 		}
-		next();
-	});
+		files.forEach(function (filename) {
+			var pluginLoader = null;
+			// TODO: make sure it's a file
+			if (filename.match(/.+\.js$/i)) {
+				name = "./plugins/" + filename.split('.').slice(0, -1).join('.');
+				pluginLoader = require(name);
+				plugin = new pluginLoader(nerdie);
 
-	walker.on("end", function() {
+				if ('object' == typeof plugin.pluginInterface) {
+					plugin.pluginInterface.addListener('registerPattern', function (pattern, callback) {
+						console.log('Registered pattern: ' + pattern);
+						j.watch_for(pattern, callback);
+					});
+				}
+				loadedPlugins[name] = plugin;
+				console.log('Loaded ' + name + ' plugin.');
+			}
+		});
 		nerdie.emit('init', config, loadedPlugins);
 	});
 
