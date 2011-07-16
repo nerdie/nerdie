@@ -45,7 +45,7 @@ NerdieInterface.prototype.anchoredPattern = function (pattern, arg) {
 
 	return new RegExp(
 		'^(' + this.nerdie.config.prefix + '|' +
-		nick + ':\\s)' + pattern +
+		nick + '[:,]?\\s)' + pattern +
 		(arg ? '\\s*(.+)' : '') + '$'
 	);
 };
