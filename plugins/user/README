@@ -1,0 +1,10 @@
+User (non-distributed) plugins go here.
+
+They can be in any of these forms (where pluginname is your plugin's name):
+
+* nerdie/plugins/user/pluginname.js
+* nerdie/plugins/user/pluginname/index.js
+* nerdie/plugins/user/pluginname/pluginname.js
+
+All files in nerdie/plugins/user/ (except this README) are `.gitignore`d by
+Nerdie core.
