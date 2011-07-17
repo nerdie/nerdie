@@ -1,6 +1,5 @@
 var https = require('https')
   , querystring = require('querystring')
-  , base64 = require('base64')
   , xml2js = require('xml2js');
 
 var NerdieInterface = require('../nerdie_interface.js');
