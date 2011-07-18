@@ -1,6 +1,6 @@
 var http = require('http');
 
-var NerdieInterface = require('../nerdie_interface.js');
+var NerdieInterface = require('nerdie_interface.js');
 
 function Beerscore(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
