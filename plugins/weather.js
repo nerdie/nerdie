@@ -6,7 +6,7 @@ var key = null
   , config = null;
 
 function Weather(parentNerdie) {
-	config = (parentNerdie.config.weather) ? parentNerdie.config.weather : {};
+	config = (parentNerdie.config.plugins.weather) ? parentNerdie.config.plugins.weather : {};
 
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);
 }
