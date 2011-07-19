@@ -8,6 +8,12 @@ if (undefined === config.prefix) {
 	config.prefix = '!';
 }
 
+// error handler
+process.on('uncaughtException', function (err) {
+	console.log('Caught exception: ' + err);
+	console.log(err.stack);
+});
+
 function Nerdie() {
 	this.config = config;
 	events.EventEmitter.call(this);
