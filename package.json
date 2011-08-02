@@ -15,7 +15,7 @@
   "engines": { "node": ">=0.4.5" },
   "dependencies": {
     "jerk": ">=1.1.15",
-    "node-tiny": ">=0.0.2",
+    "tiny": ">=0.0.2",
     "coloured": ">=0.2.0",
     "log": ">=1.1.1",
     "futures": ">=2.0.3",

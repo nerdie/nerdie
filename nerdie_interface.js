@@ -1,5 +1,5 @@
 var emitter = require('events').EventEmitter
-  , Tiny = require('node-tiny');
+  , Tiny = require('tiny');
 
 var dbPath = __dirname + '/db/';
 
