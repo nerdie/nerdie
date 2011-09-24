@@ -10,19 +10,6 @@ Copy the config file config.json.default to config.json and edit as appropriate.
 Now run:
     node server.js
 
-## Tiny Module Errors
-
-If you see this: 
-"You're seeing this error because you used npm to install tiny.
-Tiny has been renamed in the npm registry to "tiny" instead of "node-tiny".
-Please use `npm install tiny` to update your package."
-
-Then go to the node_modules directory and delete the node_tiny directory.  Back in the root directory, do:
-    npm install tiny
-
-Then edit nerdie_interface.js changing node_tiny into tiny as well.
-
-
 # Usage
 There are no usage instructions.  The following regular expressions are registered with nerdie by default:
     Registered pattern: /what is best in life/i
