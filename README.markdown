@@ -11,7 +11,9 @@ Now run:
     node server.js
 
 # Usage
+
 There are no usage instructions.  The following regular expressions are registered with nerdie by default:
+
     Registered pattern: /what is best in life/i
     Registered pattern: /(strong.+steel)|(steel.+strong)|(steel.+strength)|(strength.+steel)/i
     Registered pattern: /^(!|nerdita[:,]?\s)help$/
