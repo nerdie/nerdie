@@ -101,7 +101,7 @@ var activityHandler = function (msg) {
 		},
 		function (err, results) {
 			if (err) {
-				if ('No Records' !== err.message) {
+				if (!err.message.match(/No Records/i)) {
 					throw err;
 				}
 				return;
