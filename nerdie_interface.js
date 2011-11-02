@@ -56,6 +56,18 @@ NerdieInterface.prototype.registerPattern = function (pattern, callback) {
 		callback
 	);
 }
+NerdieInterface.prototype.userJoin = function (callback) {
+	this.emit(
+		'userJoin',
+		callback
+	);
+}
+NerdieInterface.prototype.userLeave = function (callback) {
+	this.emit(
+		'userLeave',
+		callback
+	);
+}
 NerdieInterface.prototype.uniqueId = function () {
 	// borrowed from:
 	//  http://comments.gmane.org/gmane.comp.lang.javascript.nodejs/2378
