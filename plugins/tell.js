@@ -3,8 +3,11 @@ var NerdieInterface = require('nerdie_interface.js');
 var db;
 var publicReminders = 3;
 var myInterface;
+var config = null;
 
 function Tell(parentNerdie) {
+	config = (parentNerdie.config.plugins.tell) ? parentNerdie.config.plugins.tell : {};
+
 	this.pluginInterface = new NerdieInterface(
 		parentNerdie,
 		this,
@@ -25,6 +28,11 @@ Tell.prototype.init = function () {
 		this.pluginInterface.anchoredPattern('ask', true),
 		tellHandler
 	);
+	if (config && config.prompt && config.prompt.length > 0) {
+		this.pluginInterface.userJoin( function(msg) {
+			activityHandler(msg, true);
+		});
+	}
 };
 Tell.prototype.gotDb = function (incomingDb) {
 	db = incomingDb;
@@ -89,7 +97,7 @@ var ago = function (ts) {
 
 	return 'seconds';
 };
-var activityHandler = function (msg) {
+var activityHandler = function (msg, prompt) {
 	if (!isChannel(msg.source)) {
 		return; // early; nothing to see here
 	}
@@ -106,10 +114,14 @@ var activityHandler = function (msg) {
 				}
 				return;
 			}
-			results.forEach(function (data) {
-				msg.say(msg.user + ": (from: " + data.msg.sender + ", " + ago(data.msg.time) + " ago) " + data.msg.content);
-				db.remove(data._key, function () {})
-			});
+			if (prompt) {
+				msg.say(msg.user + ': ' + config.prompt);
+			} else {
+				results.forEach(function (data) {
+					msg.say(msg.user + ": (from: " + data.msg.sender + ", " + ago(data.msg.time) + " ago) " + data.msg.content);
+					db.remove(data._key, function () {})
+				});
+			}
 		}
 	);
 }

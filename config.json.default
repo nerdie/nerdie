@@ -13,6 +13,9 @@
     "logs": "logs",
     "delayAfterConnect": 1500,
     "plugins": {
+        "tell": {
+          "prompt": ""
+        },
         "twitter": {
             "auth": {
                 "user": "nerdiebot",
