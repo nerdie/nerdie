@@ -42,6 +42,14 @@ Nerdie.prototype.bot = jerk(function(j){
 				console.log('Registered pattern: ' + pattern);
 				j.watch_for(pattern, callback);
 			});
+			plugin.pluginInterface.addListener('userJoin', function (callback) {
+				console.log('Registered callback for userJoin');
+				j.user_join(callback);
+			});
+			plugin.pluginInterface.addListener('userLeave', function (callback) {
+				console.log('Registered callback for userLeave');
+				j.user_leave(callback);
+			});
 		}
 		loadedPlugins[name] = plugin;
 		console.log('Loaded ' + name + ' plugin.');
