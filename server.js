@@ -1,6 +1,7 @@
 var jerk   = require('jerk')
   , events = require('events')
   , fs = require('fs')
+  , path = require( 'path' )
   , config = require('./configulator');
 
 // defaults:
@@ -31,10 +32,9 @@ Nerdie.prototype.bot = jerk(function(j){
 	  , loadedPlugins = {}
 	  , name = null;
 
-	require.paths.push(__dirname);
 	var loadPlugin = function (prefix, filename) {
 		name = prefix + filename.split('.').slice(0, -1).join('.');
-		var pluginLoader = require(name);
+		var pluginLoader = path.join( __dirname, name )
 		plugin = new pluginLoader(nerdie);
 
 		if ('object' == typeof plugin.pluginInterface) {
