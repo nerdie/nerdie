@@ -1,9 +1,7 @@
 var request = require('request');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 function Tychay(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Tychay.prototype.init = function () {
 	this.pluginInterface.registerPattern(/.*(?:terry\s+chay|tychay)/i, this.getChayism);

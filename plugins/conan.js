@@ -1,9 +1,7 @@
 var request = require('request');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 function Conan(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Conan.prototype.init = function () {
 	this.pluginInterface.registerPattern(

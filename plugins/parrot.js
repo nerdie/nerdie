@@ -1,10 +1,8 @@
-var NerdieInterface = require('../nerdie_interface.js');
-
 var currentCount;
 var db;
 
 function Parrot(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(
+	this.pluginInterface = new parentNerdie.iface(
 		parentNerdie,
 		this,
 		{db: true}

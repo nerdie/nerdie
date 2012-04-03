@@ -2,8 +2,6 @@ var https = require('https')
   , querystring = require('querystring')
   , xml2js = require('xml2js');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 var tracker_token;
 var default_project;
 var bot;
@@ -11,7 +9,7 @@ var nerdie;
 var enabled = true;
 
 function Pivotal(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 	if (!parentNerdie.config.plugins.pivotal) {
 		enabled = false;
 		return;

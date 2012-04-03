@@ -1,14 +1,12 @@
 var http = require('http')
   , querystring = require('querystring');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 var twitter_auth;
 var bot;
 var nerdie;
 
 function Twitter(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 	if (parentNerdie.config.plugins.twitter && parentNerdie.config.plugins.twitter.auth) {
 		twitter_auth = parentNerdie.config.plugins.twitter.auth;
 	}

@@ -1,14 +1,13 @@
 var request = require('request')
   , querystring = require('querystring');
 
-var NerdieInterface = require('../nerdie_interface.js');
 var key = null
   , config = null;
 
 function Weather(parentNerdie) {
 	config = (parentNerdie.config.plugins.weather) ? parentNerdie.config.plugins.weather : {};
 
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Weather.prototype.init = function () {
 	this.pluginInterface.registerPattern(

@@ -1,9 +1,7 @@
 var http = require('http');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 function Beerscore(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Beerscore.prototype.init = function () {
 	this.pluginInterface.registerPattern(

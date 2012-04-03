@@ -1,8 +1,7 @@
-var NerdieInterface = require('../nerdie_interface.js')
-  , config = null;
+var config = null;
 
 function Reload(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 	config = (parentNerdie.config.admins) ? parentNerdie.config.admins : [];
 }
 

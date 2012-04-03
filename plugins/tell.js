@@ -1,5 +1,3 @@
-var NerdieInterface = require('../nerdie_interface.js');
-
 var db;
 var publicReminders = 3;
 var myInterface;
@@ -8,7 +6,7 @@ var config = null;
 function Tell(parentNerdie) {
 	config = (parentNerdie.config.plugins.tell) ? parentNerdie.config.plugins.tell : {};
 
-	this.pluginInterface = new NerdieInterface(
+	this.pluginInterface = new parentNerdie.iface(
 		parentNerdie,
 		this,
 		{db: true}

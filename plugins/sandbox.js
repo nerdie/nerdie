@@ -1,12 +1,10 @@
 var sandbox = require('sandbox')
   , codepad = require('codepad');
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 module.exports = Sandbox;
 
 function Sandbox(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Sandbox.prototype.init = function () {
 	this.pluginInterface.registerPattern(

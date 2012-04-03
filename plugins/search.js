@@ -1,10 +1,8 @@
 var Google = require('../vendor/google/google')
   , g = new Google();
 
-var NerdieInterface = require('../nerdie_interface.js');
-
 function Search(parentNerdie) {
-	this.pluginInterface = new NerdieInterface(parentNerdie, this);
+	this.pluginInterface = new parentNerdie.iface(parentNerdie, this);
 }
 Search.prototype.init = function () {
 	this.pluginInterface.registerPattern(
