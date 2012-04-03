@@ -1,6 +1,6 @@
 var request = require('request');
 
-var NerdieInterface = require('nerdie_interface.js');
+var NerdieInterface = require('../nerdie_interface.js');
 
 function Conan(parentNerdie) {
 	this.pluginInterface = new NerdieInterface(parentNerdie, this);

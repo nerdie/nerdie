@@ -1,7 +1,7 @@
 var http = require('http')
   , querystring = require('querystring');
 
-var NerdieInterface = require('nerdie_interface.js');
+var NerdieInterface = require('../nerdie_interface.js');
 
 var twitter_auth;
 var bot;

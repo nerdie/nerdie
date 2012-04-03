@@ -1,7 +1,7 @@
 var sandbox = require('sandbox')
   , codepad = require('codepad');
 
-var NerdieInterface = require('nerdie_interface.js');
+var NerdieInterface = require('../nerdie_interface.js');
 
 module.exports = Sandbox;
 

@@ -2,7 +2,7 @@ var https = require('https')
   , querystring = require('querystring')
   , xml2js = require('xml2js');
 
-var NerdieInterface = require('nerdie_interface.js');
+var NerdieInterface = require('../nerdie_interface.js');
 
 var tracker_token;
 var default_project;

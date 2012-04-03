@@ -1,7 +1,7 @@
 var request = require('request')
   , querystring = require('querystring');
 
-var NerdieInterface = require('nerdie_interface.js');
+var NerdieInterface = require('../nerdie_interface.js');
 var key = null
   , config = null;
 
