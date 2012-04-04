@@ -2,7 +2,7 @@
  * Shamelessly taken from https://github.com/gf3/protobot
  */
 
-var sys = require('sys');
+var util = require('util');
 var exec = require('child_process').exec;
 
 function Google() {
@@ -25,6 +25,6 @@ module.exports = Google;
 
 //g = new Google();
 //g.search('nerderati', function(result) {
-	//sys.puts(result.length);
-	//sys.puts(sys.inspect(result));
+	//util.puts(result.length);
+	//util.puts(util.inspect(result));
 //});
